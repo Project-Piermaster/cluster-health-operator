@@ -40,6 +40,7 @@ type ClusterIssueStatus struct {
 
 // +kubebuilder:object:root=true
 // +kubebuilder:subresource:status
+// +kubebuilder:resource:scope=Cluster,shortName=ci
 
 // ClusterIssue is the Schema for the clusterissues API
 type ClusterIssue struct {

@@ -11,8 +11,10 @@ spec:
     kind: ClusterIssue
     listKind: ClusterIssueList
     plural: clusterissues
+    shortNames:
+    - ci
     singular: clusterissue
-  scope: Namespaced
+  scope: Cluster
   versions:
   - name: v1alpha1
     schema:

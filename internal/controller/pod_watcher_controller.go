@@ -2,6 +2,7 @@ package controller
 
 import (
 	"context"
+	"log"
 	"time"
 
 	corev1 "k8s.io/api/core/v1"
@@ -52,8 +53,7 @@ func (r *PodWatcher) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Resu
 		// pod is truly unschedulable, create ClusterIssue
 		issue := &healthv1alpha1.ClusterIssue{
 			ObjectMeta: metav1.ObjectMeta{
-				GenerateName: "unschedulable-",
-				Namespace:    pod.Namespace,
+				GenerateName: "pod-pending-",
 			},
 			Spec: healthv1alpha1.ClusterIssueSpec{
 				PodRef: corev1.ObjectReference{
@@ -64,7 +64,8 @@ func (r *PodWatcher) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Resu
 				DiagnosedAt: metav1.Now(),
 			},
 		}
-
+		// log the issue
+		log.Printf("Creating ClusterIssue for pod %s in namespace %s", pod.Name, pod.Namespace)
 		if err := r.Create(ctx, issue); err != nil {
 			return ctrl.Result{}, err
 		}
