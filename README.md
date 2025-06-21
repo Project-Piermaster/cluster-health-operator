@@ -12,6 +12,39 @@ Cluster-health-operator is a kubernetes native operator that runs inside your cl
 - kubectl version v1.11.3+.
 - Access to a Kubernetes v1.11.3+ cluster.
 
+## Engineering Goals (TODO):
+
+### 1. Expand `ClusterIssue` CRD
+- [ ] Detect and diagnose:
+  - [ ] Pod stuck in `Pending` → scheduling failure reason
+  - [ ] Pod stuck in `ContainerCreating` → image pull, volume, CNI, runtime
+  - [ ] Pod in `CrashLoopBackOff` → exit codes, liveness probe, OOMKilled
+  - [ ] Pod with abnormal restarts (e.g., >5 in 10m) → trend-based flag
+- [ ] Add `Reason` enum and `diagnostics engine` per pod phase
+
+### 2. Implement `ClusterHealth` CRD
+- [ ] Periodic scoring snapshot
+- [ ] Metrics across nodes, pods, etcd, API latency
+- [ ] Aggregation from live state + daemonset feeds
+
+### 3. Deploy node-level DaemonSet agent
+- [ ] Gather:
+  - Node status
+  - Allocatable + pressure conditions
+  - kubelet + runtime metrics
+- [ ] Push to central controller or Redis
+
+### 4. Redis-backed Cache API
+- [ ] In-memory cache of cluster state
+- [ ] Serve CRD data and raw insights via lightweight REST API
+- [ ] TTL-based freshness enforcement
+
+### 5. CLI: `choctl`
+- [ ] `choctl issues` – List current `ClusterIssue`s
+- [ ] `choctl inspect <pod>` – On-demand diagnostics
+- [ ] `choctl health` – Pull latest `ClusterHealth`
+
+
 ### To Deploy on the cluster
 **Build and push your image to the location specified by `IMG`:**
 
