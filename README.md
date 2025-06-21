@@ -1,6 +1,8 @@
 # cluster-health-operator
 Cluster health first mate
 
+![M8 the First Mate](./assets/cluster_mate.png)
+
 ## Description
 Cluster-health-operator is a kubernetes native operator that runs inside your clusters and maintains a constant stream of health checks that can be easily accessed via CRDs
 
